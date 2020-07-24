@@ -7,6 +7,7 @@ def is_anagram(s1, s2):
     :param s2: string
     :return: True or False
     """
+    # Trier les deux chaines de caractères puis comparer les deux listes triées
     return "".join(sorted(s1)) == "".join(sorted(s2))
 
 def check_parenthesis_consistency(string):
@@ -19,13 +20,18 @@ def check_parenthesis_consistency(string):
     :param string: the string to analyse.
     :return: True if the parentheses are balanced, False if not.
     """
+    #initialiser un compteur
     count = 0
 
+    #on parcourt la chaine de caractères
     for x in string:
         if x == '(':
+        #si parenthèse ouvrante ajouter +1 au compteur 
             count += 1
         elif x == ')':
-            count -= 1        
+        #si parenthèse fermante ajouter -1 au compteur    
+            count -= 1
+    #return true si count = 0 et false si count != 0               
     return not count        
 
 def shortest_path(start, end, maze):
@@ -39,51 +45,58 @@ def shortest_path(start, end, maze):
     :param maze: list of lists - the maze
     :return: list of positions [(x1, y1), (x2, y2), ...] representing the shortest path in the maze
     """
+    #liste des coups à jouer
     queue = []
+
     possible = False
     nbreLigne = len(maze)
     nbreCol = len(maze[0])
+
+    #liste des pères () initialiser à la taille du maze
     pere = [(-1,-1) for _ in range(nbreCol * nbreLigne)]
+    
+    #on commence au start
     queue.append(start)
 
-    def searchMove(point):
+    #fonction qui renvoie la liste des voisins à explorer, on regarde si le point à coté n'est pas un mur et n'a pas de père
+    def searchMove(point):  
         close = []
         if(point[0] > 0 and maze[point[0]-1][point[1]] and pere[nbreCol * (point[0] - 1) + point[1]] == (-1,-1)):
-            #bas
-            close.append((point[0]-1 , point[1]))
-            
+            #ajouter le voisin du bas
+            close.append((point[0]-1 , point[1]))   
         if(point[0] < nbreLigne -1 and maze[point[0]+1][point[1]] and pere[nbreCol * (point[0] + 1) + point[1]] == (-1,-1)):
-            #haut
+            #ajouter le voisin du haut
             close.append((point[0]+1 , point[1]))
-
         if(point[1] > 0 and maze[point[0]][point[1]-1] and pere[nbreCol * point[0] + (point[1] - 1)] == (-1,-1)):
-            #droite
+            #ajouter le voisin de gauche
             close.append((point[0] , point[1] - 1))
-
         if(point[1] < nbreCol - 1 and maze[point[0]][point[1]+1] and pere[nbreCol * point[0] + (point[1] + 1)] == (-1,-1)):
-            #gauche
+            #ajouter le voisin de droite 
             close.append((point[0] , point[1] + 1))    
         return close
-
+    #parcours en largeur
     while len(queue) != 0:
-        caseCour = queue.pop(0)
-        
+        caseCour = queue.pop(0) 
         if caseCour == end:
+        #on est sur l'arrivée    
             possible = True
             break
         else: 
+        #on continue d'explorer    
             for x in searchMove(caseCour):
                 queue.append(x)
-                pere[x[0] * nbreCol + x[1]] = caseCour                  
+                pere[x[0] * nbreCol + x[1]] = caseCour
+    #verification si le chemin peut arriver jusqu'à la fin                               
     if possible:
+        #construction du chemin à parcourir
         chemin = [end]
-
+        #tant que le dernier élement n'est le départ on rajoute les pères de chaque points
         while chemin[-1] != start:
-            chemin.append(pere[nbreCol * chemin[-1][0] + chemin[-1][1]]) 
-        chemin.reverse() 
-        print(chemin)   
+            chemin.append(pere[nbreCol * chemin[-1][0] + chemin[-1][1]])
+        #on inverse le chemin pour l'avoir dans le bon ordre     
+        chemin.reverse()  
         return chemin 
     else:
-        print(pere) 
+    #aucun chemin arrive jusqu'à la fin du maze    
         return False
 
