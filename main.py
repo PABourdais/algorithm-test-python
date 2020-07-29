@@ -60,7 +60,7 @@ if __name__ == "__main__":
             expected_output=out
         ))
 
-    for inp, out in (("()", True), ("(())", True), ("()()", True), ("(()", False), ("())", False),
+    for inp, out in (("()", True),(")(", False), ("(())", True), ("()()", True), ("(()", False), ("())", False),
                      ("(((()", False), ("())))", False)):
         suite.addTest(AlgorithmTest(
             "test_algorithm_input_output",

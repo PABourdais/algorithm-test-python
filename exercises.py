@@ -25,12 +25,13 @@ def check_parenthesis_consistency(string):
 
     #on parcourt la chaine de caractères
     for x in string:
-        if x == '(':
-        #si parenthèse ouvrante ajouter +1 au compteur 
-            count += 1
-        elif x == ')':
-        #si parenthèse fermante ajouter -1 au compteur    
-            count -= 1
+        if count >= 0:
+            if x == '(':
+            #si parenthèse ouvrante ajouter +1 au compteur 
+                count += 1
+            elif x == ')':
+            #si parenthèse fermante ajouter -1 au compteur    
+                count -= 1
     #return true si count = 0 et false si count != 0               
     return not count        
 
